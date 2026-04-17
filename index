@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smoothie Sim</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+    }
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="gameCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+// images (we’ll add them soon)
+const background = new Image();
+background.src = "background.png";
+
+const shelf = new Image();
+shelf.src = "shelf.png";
+
+const veranaNormal = new Image();
+veranaNormal.src = "verana.png";
+
+const veranaBlink = new Image();
+veranaBlink.src = "verana_blink.png";
+
+// blinking
+let isBlinking = false;
+
+function blinkLoop() {
+  const delay = Math.random() * 3000 + 2000;
+
+  setTimeout(() => {
+    isBlinking = true;
+
+    setTimeout(() => {
+      isBlinking = false;
+      blinkLoop();
+    }, 120);
+
+  }, delay);
+}
+
+// draw loop
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+  const veranaImage = isBlinking ? veranaBlink : veranaNormal;
+  ctx.drawImage(veranaImage, 300, 200, 400, 400);
+
+  ctx.drawImage(shelf, 0, 0, canvas.width, canvas.height);
+
+  requestAnimationFrame(draw);
+}
+
+blinkLoop();
+draw();
+</script>
+
+</body>
+</html>
